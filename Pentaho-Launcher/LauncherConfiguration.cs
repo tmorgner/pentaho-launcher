@@ -123,11 +123,11 @@ namespace Pentaho
       }
     }
 
-    public bool ValidateEnvironment()
+    public void ValidateEnvironment()
     {
       if (FixJavaHome == false)
       {
-        return true;
+        return;
       }
 
       string pentahoJavaHome = Environment.GetEnvironmentVariable("PENTAHO_JAVA_HOME");
@@ -135,7 +135,7 @@ namespace Pentaho
       {
         if (Directory.Exists(pentahoJavaHome))
         {
-          return true;
+          return;
         }
         this.javaHome = pentahoJavaHome;
         Console.Out.WriteLine("[Launcher] PENTAHO_JAVA_HOME environment variable defined, but does not point to a valid directory.");
@@ -146,35 +146,36 @@ namespace Pentaho
       {
         if (Directory.Exists(javaHome))
         {
-          return true;
+          return;
         }
         this.javaHome = javaHome;
         Console.Out.WriteLine("[Launcher] JAVA_HOME environment variable defined, but does not point to a valid directory.");
       }
 
-      RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\JavaSoft\Java Runtime Environment\" + javaVersion);
-      if (registryKey == null)
+      using (RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\JavaSoft\Java Runtime Environment\" + javaVersion))
       {
-        // NO JDK defined. 
-        Console.Out.WriteLine("[Launcher] Neither JAVA_HOME or PENTAHO_JAVA_HOME environment variable defined and the registry does not contain a trace of a JRE {0}.", javaVersion);
-        return false;
-      }
-
-      string value = registryKey.GetValue("JavaHome") as string;
-      if (value != null)
-      {
-        if (Directory.Exists(value))
+        if (registryKey == null)
         {
-          Console.Out.WriteLine("[Launcher] Neither JAVA_HOME or PENTAHO_JAVA_HOME environment variable defined. Using registry default value.");
-          this.javaHome = value;
-          return true;
+          // NO JDK defined. 
+          Console.Out.WriteLine("[Launcher] Neither JAVA_HOME or PENTAHO_JAVA_HOME environment variable defined and the registry does not contain a trace of a JRE {0}.", javaVersion);
+          return;
         }
-        Console.Out.WriteLine("[Launcher] Java location defined in your registry is pointing to a non-existing directory. Unable to continue.");
-        return false;
-      }
 
-      Console.Out.WriteLine("[Launcher] Neither JAVA_HOME or PENTAHO_JAVA_HOME environment variable defined and the registry does not contain a trace of a JRE {0}.", javaVersion);
-      return false;
+        string value = registryKey.GetValue("JavaHome") as string;
+        if (value != null)
+        {
+          if (Directory.Exists(value))
+          {
+            Console.Out.WriteLine("[Launcher] Neither JAVA_HOME or PENTAHO_JAVA_HOME environment variable defined. Using registry default value.");
+            this.javaHome = value;
+            return;
+          }
+          Console.Out.WriteLine("[Launcher] Java location defined in your registry is pointing to a non-existing directory. Unable to continue.");
+          return;
+        }
+
+        Console.Out.WriteLine("[Launcher] Neither JAVA_HOME or PENTAHO_JAVA_HOME environment variable defined and the registry does not contain a trace of a JRE {0}.", javaVersion);
+      }
     }
   }
 }

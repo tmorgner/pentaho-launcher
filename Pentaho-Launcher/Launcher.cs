@@ -27,9 +27,9 @@ namespace Pentaho
       }
     }
 
-    private bool ValidateEnvironment()
+    private void ValidateEnvironment()
     {
-      return configuration.ValidateEnvironment();
+      configuration.ValidateEnvironment();
     }
 
     private void RegisterExtensions()
@@ -49,10 +49,7 @@ namespace Pentaho
     private static int Main(string[] args)
     {
       Launcher launcher = new Launcher();
-      if (launcher.ValidateEnvironment() == false)
-      {
-        return -1;
-      }
+      launcher.ValidateEnvironment();
       launcher.RegisterExtensions();
       return launcher.LaunchExecutable();
     }
