@@ -1,0 +1,17 @@
+# Unity3D .gitignore file.
+# Store this file at the root of your local repository.
+.DS_Store
+Temp
+*.pidb
+obj
+bin
+VC
+_Resharper*
+_UpgradeReport_Files
+UpgradeLog.htm
+UpgradeLog.XML
+*.mdb
+*.pdb
+*.user
+*.suo
+
