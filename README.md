@@ -33,7 +33,7 @@ The following properties are defined:
  * FixJavaHome: If no JAVA_HOME is defined, shall the launcher try to come
                 up with an temporary JAVA_HOME variable.
  * ProgramId  : The program-id must be a unique ID to identify the application.
- 
+ * AutoRepair : 
 
 When starting, the launcher goes through the following steps:
 

@@ -111,6 +111,7 @@ namespace Pentaho
       programId = GetConfiguration("ProgramId", "PentahoReportDesigner");
       fullPathExecutable = args[0];
       workingDirectory = Path.GetDirectoryName(fullPathExecutable);
+      repairRegistration = "True".Equals(GetConfiguration("AutoRepair", "False"), StringComparison.InvariantCultureIgnoreCase);
 
       for (int i = 1; i < args.Length; i++)
       {
