@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace Pentaho
+namespace Pentaho.Launcher.Core
 {
   public class LauncherFileRegistration
   {
-    private LauncherConfiguration configuration;
+    private readonly LauncherConfiguration configuration;
 
     public LauncherFileRegistration(LauncherConfiguration configuration)
     {

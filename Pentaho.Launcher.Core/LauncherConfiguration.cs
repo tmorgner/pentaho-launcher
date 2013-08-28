@@ -3,11 +3,11 @@ using System.Configuration;
 using System.IO;
 using Microsoft.Win32;
 
-namespace Pentaho
+namespace Pentaho.Launcher.Core
 {
   public class LauncherConfiguration
   {
-    private string[] args;
+    private readonly string[] args;
     private string executable;
     private string[] extensions;
     private bool repairRegistration;
@@ -17,6 +17,7 @@ namespace Pentaho
     private string javaHome;
     private bool fixJavaHome;
     private string workingDirectory;
+    private string launcherArguments;
 
     public LauncherConfiguration()
     {
@@ -73,6 +74,11 @@ namespace Pentaho
       get { return fixJavaHome; }
     }
 
+    public string LauncherArguments
+    {
+      get { return launcherArguments; }
+    }
+
     private string GetConfiguration(string key, string defaultValue)
     {
       try
@@ -111,6 +117,7 @@ namespace Pentaho
       programId = GetConfiguration("ProgramId", "PentahoReportDesigner");
       fullPathExecutable = args[0];
       workingDirectory = Path.GetDirectoryName(fullPathExecutable);
+      launcherArguments = GetConfiguration("LauncherArguments", " \"%1\"");
       repairRegistration = "True".Equals(GetConfiguration("AutoRepair", "False"), StringComparison.InvariantCultureIgnoreCase);
 
       for (int i = 1; i < args.Length; i++)

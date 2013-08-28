@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Security.Permissions;
 
-namespace Pentaho
+namespace Pentaho.Launcher.Core
 {
-  internal class Launcher
+  [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust", Unrestricted = false)]
+  public class LauncherCore
   {
     private ProcessWrapper process;
     private readonly LauncherConfiguration configuration;
 
-    private Launcher()
+    public LauncherCore()
     {
       Console.Out.WriteLine("[Launcher] Starting Pentaho Launcher");
       configuration = new LauncherConfiguration();
       configuration.LoadConfiguration();
-      
+
       Console.Out.WriteLine("[Launcher] Launcher location '{0}'.", configuration.FullPathExecutable);
 
       Console.CancelKeyPress += CancelHandler;
@@ -44,14 +46,12 @@ namespace Pentaho
       return this.process.LaunchExecutable();
     }
 
-
-    [STAThread]
-    private static int Main(string[] args)
+    public static int DefaultMain(string[] args)
     {
-      Launcher launcher = new Launcher();
-      launcher.ValidateEnvironment();
-      launcher.RegisterExtensions();
-      return launcher.LaunchExecutable();
+      LauncherCore launcherCore = new LauncherCore();
+      launcherCore.ValidateEnvironment();
+      launcherCore.RegisterExtensions();
+      return launcherCore.LaunchExecutable();
     }
   }
 }

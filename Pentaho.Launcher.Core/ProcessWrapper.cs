@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Pentaho
+namespace Pentaho.Launcher.Core
 {
   public class ProcessWrapper
   {
@@ -108,6 +109,7 @@ namespace Pentaho
       }
     }
 
+    [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust", Unrestricted = false)]
     public int LaunchExecutable()
     {
       int exitCode = 0;
@@ -166,6 +168,6 @@ namespace Pentaho
       Console.Out.WriteLine("[Launcher] Finished with exit-code " + exitCode);
       return exitCode;
     }
- 
+
   }
 }
